@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.UserDao;
 import com.javaex.vo.UserVo;
@@ -54,6 +55,19 @@ public class UserServlet extends HttpServlet {
 			
 			UserDao dao = new UserDao();
 			UserVo vo = dao.getUser(email, password);
+			
+			if(vo == null) {			//로그인에 실패했을 경우
+				System.out.println("실패");
+			} else {
+				System.out.println("성공");
+				HttpSession session = request.getSession(true);
+				session.setAttribute("authUser", vo);		//사용자의 세션id에 authUser는 그냥 별명(인증된 유저)으로 vo를 실어줌
+				
+				response.sendRedirect("/mysite/main");
+				
+				return;			//여기서 끝 -> 여기서는 안하면 오류남
+			}
+			
 		} else {
 			response.sendRedirect("/mysite/main");	//사용자가 다시 요청하는 것이므로 사용자가 작성하는 것과 같이 작성
 		}

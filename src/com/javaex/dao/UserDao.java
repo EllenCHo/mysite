@@ -36,10 +36,11 @@ public class UserDao {
 					rs = pstmt.executeQuery();
 					
 					// 4.결과처리
-					vo = new UserVo();
-					vo.setNo(rs.getInt("no"));
-					vo.setName(rs.getString("name"));
-					
+					if(rs.next()) {
+						vo = new UserVo();
+						vo.setNo(rs.getInt("no"));
+						vo.setName(rs.getString("name"));
+					}
 				} catch (ClassNotFoundException e) {
 					System.out.println("error: 드라이버 로딩 실패 - " + e);
 				} catch (SQLException e) {
