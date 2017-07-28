@@ -58,6 +58,14 @@ public class UserServlet extends HttpServlet {
 			
 			if(vo == null) {			//로그인에 실패했을 경우
 				System.out.println("실패");
+				response.sendRedirect("/mysite/user?a=loginform&result=fail");
+				
+				
+				/*request.setAttribute("result", "fail");
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
+				rd.forward(request, response);
+				*/
+				
 			} else {
 				System.out.println("성공");
 				HttpSession session = request.getSession(true);
