@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.javaex.dao.UserDao;
+import com.javaex.vo.UserVo;
+
 /**
  * Servlet implementation class UserServlet
  */
@@ -26,6 +29,19 @@ public class UserServlet extends HttpServlet {
 																//개발 영역으로 들어가는 것이므로 밑의 주소와 다름
 			rd.forward(request, response);
 		} else if("join".equals(actionName)) {
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+			String gender = request.getParameter("gender");
+			
+			UserVo vo = new UserVo(name, email, password, gender);
+			UserDao dao = new UserDao();
+			
+			dao.insert(vo);
+			
+			//insert가 결과값을 저장하므로 1이상 리턴할 경우 db에 성공적으로 저장했으므로 if-else문으로 회원가입 성공과 실패를 나누는 방법이 필요할 듯
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/joinsuccess.jsp");
+			rd.forward(request, response);
 			
 		} else {
 			response.sendRedirect("/mysite/main");	//사용자가 다시 요청하는 것이므로 사용자가 작성하는 것과 같이 작성
