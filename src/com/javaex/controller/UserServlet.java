@@ -61,12 +61,14 @@ public class UserServlet extends HttpServlet {
 			if (vo == null) { // 로그인에 실패했을 경우
 				System.out.println("실패");
 				response.sendRedirect("/mysite/user?a=loginform&result=fail");
-
-				/*
-				 * request.setAttribute("result", "fail"); RequestDispatcher rd =
-				 * request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
-				 * rd.forward(request, response);
-				 */
+				//forward로 쓸 경우에 그 전에 사용자가 넣은 정보가 그대로 있으므로 새로고침을 하게되는 경우 
+				//똑같이 틀린 아이디와 비번으로 로그인을 시도한 것과 같게 된다
+				//따라서 회원가입이나 글을 작성하는 경우에는 글의 양식이 남아있지 않도록 redirect를 써야한다
+				
+				/*request.setAttribute("result", "fail"); 
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
+				rd.forward(request, response);*/
+				 
 
 			} else {
 				System.out.println("성공");
