@@ -41,6 +41,8 @@ public class UserServlet extends HttpServlet {
 			
 			//insert가 결과값을 저장하므로 1이상 리턴할 경우 db에 성공적으로 저장했으므로 if-else문으로 회원가입 성공과 실패를 나누는 방법이 필요할 듯
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/joinsuccess.jsp");
+			//리다이렉트로 못하는 이유는 joinsuccess.jsp로 직접적으로 들어갈 수없기 때문이다.
+			//else if문으로 joinsuccess.jsp으로 포워딩시킬수있지만 결국에는 두번 일을 하는 것이므로 join에서 바로 포워딩시킨다.
 			rd.forward(request, response);
 			
 		} else {
