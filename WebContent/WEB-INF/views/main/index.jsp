@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="/mysite/assets/css/main.css" rel="stylesheet" type="text/css">
+<link href="/mysite/assets/css/main.css" rel="stylesheet" type="text/css"> <!-- css파일과 링크를 거는것  -->
 <title>Mysite</title>
 </head>
 <body>
@@ -27,7 +27,7 @@
 		
 		<div id="navigation">
 			<ul>
-				<li><a href="">황일영</a></li>
+				<li><a href="">조은솔</a></li>
 				<li><a href="">방명록</a></li>
 				<li><a href="">게시판</a></li>
 			</ul>
