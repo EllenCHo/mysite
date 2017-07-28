@@ -48,6 +48,12 @@ public class UserServlet extends HttpServlet {
 		} else if("loginform".equals(actionName)) {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
 			rd.forward(request, response);
+		} else if("login".equals(actionName)) {
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+			
+			UserDao dao = new UserDao();
+			UserVo vo = dao.getUser(email, password);
 		} else {
 			response.sendRedirect("/mysite/main");	//사용자가 다시 요청하는 것이므로 사용자가 작성하는 것과 같이 작성
 		}
