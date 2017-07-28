@@ -45,6 +45,9 @@ public class UserServlet extends HttpServlet {
 			//else if문으로 joinsuccess.jsp으로 포워딩시킬수있지만 결국에는 두번 일을 하는 것이므로 join에서 바로 포워딩시킨다.
 			rd.forward(request, response);
 			
+		} else if("loginform".equals(actionName)) {
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/loginform.jsp");
+			rd.forward(request, response);
 		} else {
 			response.sendRedirect("/mysite/main");	//사용자가 다시 요청하는 것이므로 사용자가 작성하는 것과 같이 작성
 		}
