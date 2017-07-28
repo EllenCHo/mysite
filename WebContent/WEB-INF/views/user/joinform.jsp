@@ -11,29 +11,9 @@
 
 	<div id="container">
 		
-		<div id="header">
-			<h1>MySite</h1>
-			<ul>
-				<!-- 로그인 전 -->
-				<li><a href="/mysite/user?a=loginform">로그인</a></li>
-				<li><a href="/mysite/user?a=joinform">회원가입</a></li>
-				
-				<!-- 로그인 후 -->
-				<!-- 
-				<li><a href="">회원정보수정</a></li>
-				<li><a href="">로그아웃</a></li> 
-				<li> 황일영님 안녕하세요^^;</li>
-				-->
-			</ul>
-		</div> <!-- /header -->
+		<jsp:include page="/WEB-INF/views/includes/header.jsp"></jsp:include>
 		
-		<div id="navigation">
-			<ul>
-				<li><a href="">조은솔</a></li>
-				<li><a href="">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div> <!-- /navigation -->
+		<jsp:include page="/WEB-INF/views/includes/navigation.jsp"></jsp:include>
 		
 		<div id="wrapper">
 			<div id="content">
@@ -71,9 +51,7 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<div id="footer">
-			<p>(c)opyright 2015,2016,2017</p>
-		</div> <!-- /footer -->
+		<jsp:include page="/WEB-INF/views/includes/footer.jsp"></jsp:include>
 		
 	</div> <!-- /container -->
 
