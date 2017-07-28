@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.javaex.vo.UserVo" %>
+<%
+	UserVo userVo = (UserVo)request.getAttribute("userVo");
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,24 +23,32 @@
 			<div id="content">
 				<div id="user">
 	
-					<form id="join-form" name="joinForm" method="" action="">
-
-						
+					<form id="join-form" name="joinForm" method="post" action="/mysite/user?a=update">
+						<input name="no" type="hidden" value="<%=userVo.getNo() %>" />
 						<label class="block-label" for="name">이름</label>
-						<input id="name" name="name" type="text" value="" />
+						<input id="name" name="name" type="text" value="<%=userVo.getName() %>" />
 	
 						<label class="block-label" for="email">이메일</label>
-						<strong></strong>
+						<strong><%=userVo.getEmail() %></strong>
 						
 						<label class="block-label">패스워드</label>
 						<input name="password" type="password" value="" />
 						
 						<fieldset>
 							<legend>성별</legend>
-							
-							<label>여</label> <input type="radio" name="gender" value="female" >
-							<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
-							
+							<%
+							if("male".equals(userVo.getGender())) {
+							%>
+								<label>여</label> <input type="radio" name="gender" value="female" >
+								<label>남</label> <input type="radio" name="gender" value="male" checked="checked">
+							<%
+							} else {
+							%>
+								<label>여</label> <input type="radio" name="gender" value="female" checked="checked">
+								<label>남</label> <input type="radio" name="gender" value="male" >
+							<%
+							}
+							%>
 						</fieldset>
 						
 						<input type="submit" value="수정완료">
