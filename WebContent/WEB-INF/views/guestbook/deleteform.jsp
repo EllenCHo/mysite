@@ -22,7 +22,7 @@
 				<div id="guestbook" class="delete-form">
 					
 					<form method="post" action="/mysite/gb?a=delete">
-						<input type="text" name="no" value="<%=no %>"/>
+						<input type="hidden" name="no" value="<%=no %>"/>
 						<label>비밀번호</label>
 						<input type="password" name="password">
 						<input type="submit" value="확인">
