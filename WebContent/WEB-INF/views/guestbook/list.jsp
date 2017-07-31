@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page import="com.javaex.vo.GuestBookVo" %>
+<%@ page import="com.javaex.dao.GuestBookDao" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%
+	List<GuestBookVo> list = (ArrayList<GuestBookVo>)request.getAttribute("list");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,7 +25,7 @@
 			<div id="content">
 				<div id="guestbook">
 					
-					<form action="" method="post">
+					<form action="/mysite/gb?a=insert" method="post">
 						
 						<table>
 							<tr>
@@ -36,21 +42,22 @@
 					</form>
 					<ul>
 						<li>
+						<%for(GuestBookVo vo : list){ %>
 							<table>
 								<tr>
-									<td>[1]</td>
-									<td>황일영</td>
-									<td>2017-07-20 11:22:30</td>
-									<td><a href="">삭제</a></td>
+									<td>[<%=vo.getNo() %>]</td>
+									<td><%=vo.getName() %></td>
+									<td><%=vo.getRegDate() %></td>
+									<td><a href="/mysite/gb?a=deleteform&no=<%=vo.getNo()%>">삭제</a></td>
 								</tr>
 								<tr>
 									<td colspan=4>
-									안녕하세요. ^^;<br>
-									하하하하	
+									<%=vo.getContent().replace("\n", "<br/>") %>
 									</td>
 								</tr>
 							</table>
 							<br>
+						<%} %>
 						</li>
 					</ul>
 					

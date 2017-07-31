@@ -99,16 +99,33 @@ public class UserServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/user/modifyform.jsp");
 			rd.forward(request, response);
 			
-		} else if("update".equals(actionName)){
-			int no = Integer.parseInt(request.getParameter("no"));
+		} else if("modify".equals(actionName)){
+			/*int no = Integer.parseInt(request.getParameter("no"));
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
 			String gender = request.getParameter("gender");
 			
 			UserVo vo = new UserVo(no, name, password, gender);
-			UserDao dao = new UserDao();
+			UserDao dao = new UserDao();*/
 			
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo)session.getAttribute("authUser");
+			
+			int no = authUser.getNo();
+			String name = request.getParameter("name");
+			String password = request.getParameter("password");
+			String gender = request.getParameter("gender");
+			
+			UserVo vo = new UserVo();
+			vo.setNo(no);
+			vo.setName(name);
+			vo.setPassword(password);
+			vo.setGender(gender);
+			
+			UserDao dao = new UserDao();
 			dao.Update(vo);
+
+			authUser.setName(name);
 			
 			response.sendRedirect("/mysite/main"); // 사용자가 다시 요청하는 것이므로 사용자가 작성하는 것과 같이 작성
 			

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%
+	String no = request.getParameter("no");
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,13 +21,13 @@
 			<div id="content">
 				<div id="guestbook" class="delete-form">
 					
-					<form method="post" action="">
-						
+					<form method="post" action="/mysite/gb?a=delete">
+						<input type="text" name="no" value="<%=no %>"/>
 						<label>비밀번호</label>
 						<input type="password" name="password">
 						<input type="submit" value="확인">
 					</form>
-					<a href="">방명록 리스트</a>
+					<a href="/mysite/gb">방명록 리스트</a>
 					
 				</div>
 			</div><!-- /content -->

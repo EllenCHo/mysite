@@ -23,8 +23,8 @@
 			<div id="content">
 				<div id="user">
 	
-					<form id="join-form" name="joinForm" method="post" action="/mysite/user?a=update">
-						<input name="no" type="hidden" value="<%=userVo.getNo() %>" />
+					<form id="join-form" name="joinForm" method="post" action="/mysite/user?a=modify">
+						<!--<input name="no" type="hidden" value="<%=userVo.getNo() %>" /> -->
 						<label class="block-label" for="name">이름</label>
 						<input id="name" name="name" type="text" value="<%=userVo.getName() %>" />
 	
