@@ -11,6 +11,7 @@
 
 	<div id="container">
 		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
+		
 		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
 
 		<div id="wrapper">

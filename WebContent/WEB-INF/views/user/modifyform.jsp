@@ -10,10 +10,9 @@
 <body>
 
 	<div id="container">
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 		
-		<jsp:include page="/WEB-INF/views/includes/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/views/includes/navigation.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
 		
 		<div id="wrapper">
 			<div id="content">
@@ -48,7 +47,7 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<jsp:include page="/WEB-INF/views/includes/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 		
 	</div> <!-- /container -->
 

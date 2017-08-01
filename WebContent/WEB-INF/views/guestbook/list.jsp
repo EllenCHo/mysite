@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="com.javaex.vo.GuestBookVo" %>
 <%@ page import="com.javaex.dao.GuestBookDao" %>
 <%@ page import="java.util.List" %>
@@ -16,10 +17,9 @@
 <body>
 
 	<div id="container">
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 		
-		<jsp:include page="/WEB-INF/views/includes/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/views/includes/navigation.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/includes/navigation.jsp"></c:import>
 		
 		<div id="wrapper">
 			<div id="content">
@@ -65,7 +65,7 @@
 			</div><!-- /content -->
 		</div><!-- /wrapper -->
 		
-		<jsp:include page="/WEB-INF/views/includes/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 		
 	</div> <!-- /container -->
 
