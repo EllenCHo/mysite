@@ -29,7 +29,7 @@ public class GuestBookServlet extends HttpServlet {
 		if("insert".equals(actionName)) {
 			String name = request.getParameter("name");
 			String password = request.getParameter("password");
-			String content = request.getParameter("content");
+			String content = request.getParameter("content").replace("\n", "<br/>");
 			
 			Calendar cal = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
