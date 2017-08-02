@@ -13,6 +13,52 @@ import java.util.List;
 import com.javaex.vo.BoardVo;
 
 public class BoardDao {
+	public int update(int boardNo, String title, String content) {
+		// 0. import java.sql.*;
+				Connection conn = null;
+				PreparedStatement pstmt = null;
+				int count = -1;
+				try {
+
+					// 1. JDBC 드라이버 (Oracle) 로딩
+					Class.forName("oracle.jdbc.driver.OracleDriver");
+
+					// 2. Connection 얻어오기
+					String url = "jdbc:oracle:thin:@localhost:1521:xe";
+					conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+					// 3. SQL문 준비 / 바인딩 / 실행
+					String query = "update board set title = ?, content = ? where no = ?";
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, title);
+					pstmt.setString(2, content.replace("\r\n", "<br/>"));
+					pstmt.setInt(3, boardNo);
+
+					count = pstmt.executeUpdate();
+
+					// 4.결과처리
+					System.out.println("게시글 수정" + count + "건 처리");
+					
+				} catch (ClassNotFoundException e) {
+					System.out.println("error: 드라이버 로딩 실패 - " + e);
+				} catch (SQLException e) {
+					System.out.println("error:" + e);
+				} finally {
+					// 5. 자원정리
+					try {
+						if (pstmt != null) {
+							pstmt.close();
+						}
+
+						if (conn != null) {
+							conn.close();
+						}
+					} catch (SQLException e) {
+						System.out.println("error:" + e);
+					}
+				}
+				return count;
+	}
 	public int delete(int boardNo) {
 		// 0. import java.sql.*;
 		Connection conn = null;
@@ -62,7 +108,10 @@ public class BoardDao {
 		// 0. import java.sql.*;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		int count = -1;
+		int boardNo = -1;
+		
 		try {
 
 			// 1. JDBC 드라이버 (Oracle) 로딩
@@ -76,7 +125,7 @@ public class BoardDao {
 			String query = "insert into BOARD values (seq_board_no.nextval, ?, ?, 0, TO_DATE(?,'YYYY-MM-DD hh24:mi:ss'), ?)";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, title);
-			pstmt.setString(2, content.replace("\n", "<br/>"));
+			pstmt.setString(2, content.replace("\r\n", "<br/>"));
 
 			Calendar cal = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -88,7 +137,16 @@ public class BoardDao {
 			count = pstmt.executeUpdate();
 
 			// 4.결과처리
-			System.out.println("게시글 등록" + count + "건 처리");
+			System.out.println("게시글 등록 " + count + "건 처리");
+			
+			query = "select seq_board_no.currval from dual";
+			pstmt = conn.prepareStatement(query);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				boardNo = rs.getInt("currval");
+			}
 
 		} catch (ClassNotFoundException e) {
 			System.out.println("error: 드라이버 로딩 실패 - " + e);
@@ -109,7 +167,7 @@ public class BoardDao {
 			}
 		}
 
-		return count;
+		return boardNo;
 	}
 
 	public BoardVo read(int boardNo) {
@@ -145,14 +203,16 @@ public class BoardDao {
 
 				hit++;
 
-				String updateQuery = "update board set hit = ? where no = ? ";
-				pstmt = conn.prepareStatement(updateQuery);
+				query = "update board set hit = ? where no = ? ";
+				pstmt = conn.prepareStatement(query);
+				System.out.println("조회수 증가");
 
 				pstmt.setInt(1, hit);
 				pstmt.setInt(2, no);
 				pstmt.executeUpdate();
 
 				vo = new BoardVo();
+				vo.setNo(no);
 				vo.setTitle(title);
 				vo.setContent(content);
 				vo.setUserNo(userNo);

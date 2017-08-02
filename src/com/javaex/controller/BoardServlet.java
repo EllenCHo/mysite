@@ -28,7 +28,29 @@ public class BoardServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String actionName = request.getParameter("a");
 
-		if ("delete".equals(actionName)) {
+		if("modify".equals(actionName)) {
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			String title = request.getParameter("title");
+			String content = request.getParameter("content");
+			
+			BoardDao dao = new BoardDao();
+			dao.update(boardNo, title, content);
+			
+			String path = "/mysite/bs?a=read&no=" + boardNo;
+			response.sendRedirect(path);
+			
+		} else if("modifyform".equals(actionName)) {
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			
+			BoardDao dao = new BoardDao();
+			BoardVo vo = dao.read(boardNo);
+			vo.setContent(vo.getContent().replace("<br/>", "\n"));
+
+			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/modifyform.jsp");
+			request.setAttribute("vo", vo);
+			rd.forward(request, response);
+			
+		} else if ("delete".equals(actionName)) {
 			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 	
 			BoardDao dao = new BoardDao();
@@ -42,10 +64,11 @@ public class BoardServlet extends HttpServlet {
 			String content = request.getParameter("content");
 
 			BoardDao dao = new BoardDao();
-			dao.insert(userNo, title, content);
+			int boardNo = dao.insert(userNo, title, content);
 
-			response.sendRedirect("/mysite/bs");
-
+			String path = "/mysite/bs?a=read&no=" + boardNo;
+			response.sendRedirect(path);
+			
 		} else if ("writeform".equals(actionName)) {
 			WebUtil.forward(request, response, "WEB-INF/views/board/writeform.jsp");
 
