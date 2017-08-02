@@ -88,7 +88,7 @@ public class BoardServlet extends HttpServlet {
 			BoardVo vo = dao.read(boardNo);
 			
 			String flag = request.getParameter("u");
-			if(!(flag.equals("me"))){				//글쓴이가 수정이나 글을 썼을 경우 조회수가 안 올라가게 함
+			if(flag == null){				//글쓴이가 수정이나 글을 썼을 경우 조회수가 안 올라가게 함
 					dao.count(boardNo);
 			}
 			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/read.jsp");
