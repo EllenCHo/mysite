@@ -10,6 +10,14 @@ public class BoardVo {
 	private String name;
 	
 	public BoardVo() {}
+	
+	public BoardVo(String title, String content, int hit, String regDate, int user_no) {
+		this.title = title;
+		this.content = content;
+		this.hit = hit;
+		this.regDate = regDate;
+		this.user_no = user_no;
+	}
 
 	public BoardVo(int no, String title, String content, int hit, String regDate, int user_no) {
 		this.no = no;
@@ -20,13 +28,12 @@ public class BoardVo {
 		this.user_no = user_no;
 	}
 
-	public BoardVo(int no, String title, String content, int hit, String regDate, int user_no, String name) {
+	public BoardVo(int no, String title, String content, int hit, String regDate, String name) {
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.hit = hit;
 		this.regDate = regDate;
-		this.user_no = user_no;
 		this.name = name;
 	}
 
