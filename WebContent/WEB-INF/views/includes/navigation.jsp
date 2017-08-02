@@ -3,6 +3,6 @@
 			<ul>
 				<li><a href="/mysite/main">조은솔</a></li>
 				<li><a href="/mysite/gb">방명록</a></li>
-				<li><a href="">게시판</a></li>
+				<li><a href="/mysite/bs">게시판</a></li>
 			</ul>
 		</div> <!-- /navigation -->

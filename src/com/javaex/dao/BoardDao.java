@@ -28,14 +28,16 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "select board.no, title, content, hit, reg_date, name from users, board where users.no = board.USER_NO;";
+			String query = "select board.no, title, content, hit, reg_date, name "
+							+ "from users, board "
+							+ "where users.no = board.USER_NO";
 			pstmt = conn.prepareStatement(query);
 
 			rs = pstmt.executeQuery();
 
 			// 4.결과처리
 			while(rs.next()) {
-				int no = rs.getInt("board.no");
+				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
 				int hit = rs.getInt("hit");
