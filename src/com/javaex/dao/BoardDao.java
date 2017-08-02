@@ -186,13 +186,13 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "insert into BOARD values (seq_board_no.nextval, ?, ?, 0, TO_DATE(?,'YYYY-MM-DD hh24:mi:ss'), ?)";
+			String query = "insert into BOARD values (seq_board_no.nextval, ?, ?, 0, TO_DATE(?,'YYYY-MM-DD hh24:mi'), ?)";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, title);
 			pstmt.setString(2, content.replace("\r\n", "<br/>"));
 
 			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			String date = sdf.format(cal.getTime());
 
 			pstmt.setString(3, date);
