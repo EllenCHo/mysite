@@ -13,6 +13,51 @@ import java.util.List;
 import com.javaex.vo.BoardVo;
 
 public class BoardDao {
+	public int delete(int boardNo) {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int count = -1;
+		try {
+
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "delete from board where no = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, boardNo);
+
+			count = pstmt.executeUpdate();
+
+			// 4.결과처리
+			System.out.println("게시글 삭제" + count + "건 처리");
+
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		return count;
+	}
+
 	public int insert(int userNo, String title, String content) {
 		// 0. import java.sql.*;
 		Connection conn = null;
@@ -32,19 +77,19 @@ public class BoardDao {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, title);
 			pstmt.setString(2, content.replace("\n", "<br/>"));
-			
+
 			Calendar cal = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(cal.getTime());
-			
+
 			pstmt.setString(3, date);
 			pstmt.setInt(4, userNo);
-			
+
 			count = pstmt.executeUpdate();
 
 			// 4.결과처리
-			System.out.println("게시글 등록" + count +"건 처리");
-			
+			System.out.println("게시글 등록" + count + "건 처리");
+
 		} catch (ClassNotFoundException e) {
 			System.out.println("error: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
@@ -151,7 +196,7 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "select board.no, title, content, hit, reg_date, name " + "from users, board "
+			String query = "select board.no, title, content, hit, reg_date, user_no, name " + "from users, board "
 					+ "where users.no = board.USER_NO order by board.no desc";
 			pstmt = conn.prepareStatement(query);
 
@@ -164,9 +209,10 @@ public class BoardDao {
 				String content = rs.getString("content");
 				int hit = rs.getInt("hit");
 				String regDate = rs.getString("reg_date");
+				int userNo = rs.getInt("user_no");
 				String name = rs.getString("name");
 
-				list.add(new BoardVo(no, title, content, hit, regDate, name));
+				list.add(new BoardVo(no, title, content, hit, regDate, userNo, name));
 
 			}
 
