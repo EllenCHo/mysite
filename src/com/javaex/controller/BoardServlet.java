@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.BoardDao;
+import com.javaex.util.WebUtil;
 import com.javaex.vo.BoardVo;
 
 /**
@@ -24,7 +25,20 @@ public class BoardServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String actionName = request.getParameter("a");
 		
-		if("read".equals(actionName)) {
+		if("write".equals(actionName)) {
+			int userNo = Integer.parseInt(request.getParameter("userNo"));
+			String title = request.getParameter("title");
+			String content = request.getParameter("content");
+			
+			BoardDao dao = new BoardDao();
+			dao.insert(userNo, title, content);
+			
+			response.sendRedirect("/mysite/bs");
+			
+		} else if("writeform".equals(actionName)) {
+			WebUtil.forward(request, response, "WEB-INF/views/board/writeform.jsp");
+			
+		} else if("read".equals(actionName)) {
 			int boardNo = Integer.parseInt(request.getParameter("no"));
 			
 			BoardDao dao = new BoardDao();

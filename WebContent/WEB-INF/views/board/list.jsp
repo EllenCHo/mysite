@@ -58,7 +58,7 @@
 				</div>	
 				<c:if test="${!(empty authUser) }">			
 				<div class="bottom">
-					<a href="" id="new-book">글쓰기</a>
+					<a href="/mysite/bs?a=writeform" id="new-book">글쓰기</a>
 				</div>
 				</c:if>				
 			</div>
