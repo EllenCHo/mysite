@@ -21,7 +21,7 @@
 					<p class="jr-success">
 						회원가입을 축하합니다.
 						<br><br>
-						<a href="/mysite/user?a=login">로그인하기</a>
+						<a href="/mysite/user?a=loginform">로그인하기</a>
 					</p>
 					
 				</div><!-- /user -->
