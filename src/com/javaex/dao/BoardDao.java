@@ -14,6 +14,53 @@ import java.util.List;
 import com.javaex.vo.BoardVo;
 
 public class BoardDao {
+	public void pager() {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int total = 0;
+		
+		try {
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "select count(*) cn from board";
+			pstmt = conn.prepareStatement(query);
+
+			rs = pstmt.executeQuery();
+
+			// 4.결과처리
+			if (rs.next()) {
+				total = rs.getInt("cn");
+				//PagingVo vo = new PagingVo(total);
+			}
+
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+	}
+
 	public List<BoardVo> search(String shStr) {
 		// 0. import java.sql.*;
 		Connection conn = null;
@@ -32,16 +79,13 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "select rn, no, title, content, hit, reg_date, user_no, name "
-							+ "from (select rownum rn, no, title, content, hit, reg_date, user_no, name "
-									+ "from (select board.no no, title, content, hit, reg_date, user_no, name "
-											+ "from users, board "
-											+ "where users.no = board.USER_NO "
-											+ "order by no asc)) "
-							+ "where title like ? or name like ?"
-							+ "order by rn desc";
+					+ "from (select rownum rn, no, title, content, hit, reg_date, user_no, name "
+					+ "from (select board.no no, title, content, hit, reg_date, user_no, name " + "from users, board "
+					+ "where users.no = board.USER_NO " + "order by no asc)) " + "where title like ? or name like ?"
+					+ "order by rn desc";
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, '%'+shStr+'%');
-			pstmt.setString(2, '%'+shStr+'%');
+			pstmt.setString(1, '%' + shStr + '%');
+			pstmt.setString(2, '%' + shStr + '%');
 			rs = pstmt.executeQuery();
 
 			// 4.결과처리
@@ -371,11 +415,8 @@ public class BoardDao {
 
 			// 3. SQL문 준비 / 바인딩 / 실행
 			String query = "select rownum rn, no, title, content, hit, reg_date, user_no, name "
-							+ "from (select board.no no, title, content, hit, reg_date, user_no, name "
-									+ "from users, board "
-									+ "where users.no = board.USER_NO "
-									+ "order by no asc)"
-							+ "order by rn desc";
+					+ "from (select board.no no, title, content, hit, reg_date, user_no, name " + "from users, board "
+					+ "where users.no = board.USER_NO " + "order by no asc)" + "order by rn desc";
 			pstmt = conn.prepareStatement(query);
 
 			rs = pstmt.executeQuery();
@@ -390,18 +431,18 @@ public class BoardDao {
 				String regDate = rs.getString("reg_date");
 				int userNo = rs.getInt("user_no");
 				String name = rs.getString("name");
-				
+
 				Calendar cal = Calendar.getInstance();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				String date = sdf.format(cal.getTime());
 				String temp = regDate.substring(0, 10);
-				
-				if(date.equals(temp)) {
+
+				if (date.equals(temp)) {
 					regDate = regDate.substring(11);
 				} else {
 					regDate = regDate.substring(0, 10);
 				}
-				
+
 				list.add(new BoardVo(num, no, title, content, hit, regDate, userNo, name));
 
 			}

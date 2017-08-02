@@ -47,17 +47,12 @@
 				</table>
 				<div class="pager">
 					<ul>
+						<!-- 처음 페이지 번호가 첫페이지보다 작을 경우 나타나도록 하자 -->
 						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li><a href="">2</a></li>
+						<li><a href="/mysite/bs&pageNo=1">1</a></li>
+						<!-- 선택된 페이지일 경우 밑의 줄처럼 하기 -->
 						<li class="selected">3</li>
-						<li><a href="">4</a></li>
-						<li><a href="">5</a></li>
-						<li><a href="">6</a></li>
-						<li><a href="">7</a></li>
-						<li><a href="">8</a></li>
-						<li><a href="">9</a></li>
-						<li><a href="">10</a></li>
+						<!-- 마지막 페이지 번호가 총 페이지번호보다 작을 경우 나타나도록 하자 -->
 						<li><a href="">▶</a></li>
 					</ul>
 				</div>	
