@@ -23,13 +23,24 @@ public class BoardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String actionName = request.getParameter("a");
-
-		BoardDao dao = new BoardDao();
-		List<BoardVo> list = dao.getlist();
-		RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/list.jsp");
-		request.setAttribute("list", list);
-		rd.forward(request, response);
 		
+		if("read".equals(actionName)) {
+			int boardNo = Integer.parseInt(request.getParameter("no"));
+			
+			BoardDao dao = new BoardDao();
+			BoardVo vo = dao.read(boardNo);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/read.jsp");
+			request.setAttribute("vo", vo);
+			rd.forward(request, response);
+			
+		} else {
+			BoardDao dao = new BoardDao();
+			List<BoardVo> list = dao.getlist();
+			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/list.jsp");
+			request.setAttribute("list", list);
+			rd.forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

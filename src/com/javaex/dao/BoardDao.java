@@ -11,12 +11,12 @@ import java.util.List;
 import com.javaex.vo.BoardVo;
 
 public class BoardDao {
-	public List<BoardVo> getlist() {
+	public BoardVo read(int boardNo) {
 		// 0. import java.sql.*;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<BoardVo> list = new ArrayList<BoardVo>();
+		BoardVo vo = null;
 		
 		try {
 
@@ -28,24 +28,90 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "select board.no, title, content, hit, reg_date, name "
-							+ "from users, board "
-							+ "where users.no = board.USER_NO";
+			String query = "select no, title, content, hit, user_no from board where no = ?";
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, boardNo);
+			
+			rs = pstmt.executeQuery();
+
+			// 4.결과처리
+			if(rs.next()) {
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				String content = rs.getString("content");
+				int hit = rs.getInt("hit");
+				int userNo = rs.getInt("user_no");
+				
+				hit++;
+				
+				String updateQuery = "update board set hit = ? where no = ? ";
+				pstmt = conn.prepareStatement(updateQuery);
+				
+				pstmt.setInt(1, hit);
+				pstmt.setInt(2, no);
+				pstmt.executeUpdate();				
+				
+				vo = new BoardVo();
+				vo.setTitle(title);
+				vo.setContent(content);
+				vo.setUserNo(userNo);
+			}
+
+		} catch (ClassNotFoundException e) {
+			System.out.println("error: 드라이버 로딩 실패 - " + e);
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			// 5. 자원정리
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+		}
+		return vo;
+	}
+
+	public List<BoardVo> getlist() {
+		// 0. import java.sql.*;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardVo> list = new ArrayList<BoardVo>();
+
+		try {
+
+			// 1. JDBC 드라이버 (Oracle) 로딩
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			// 2. Connection 얻어오기
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
+
+			// 3. SQL문 준비 / 바인딩 / 실행
+			String query = "select board.no, title, content, hit, reg_date, name " + "from users, board "
+					+ "where users.no = board.USER_NO";
 			pstmt = conn.prepareStatement(query);
 
 			rs = pstmt.executeQuery();
 
 			// 4.결과처리
-			while(rs.next()) {
+			while (rs.next()) {
 				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
 				int hit = rs.getInt("hit");
 				String regDate = rs.getString("reg_date");
 				String name = rs.getString("name");
-				
+
 				list.add(new BoardVo(no, title, content, hit, regDate, name));
-				
+
 			}
 
 		} catch (ClassNotFoundException e) {

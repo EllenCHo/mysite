@@ -6,26 +6,26 @@ public class BoardVo {
 	private String content;
 	private int hit;
 	private String regDate;
-	private int user_no;
+	private int userNo;
 	private String name;
 	
 	public BoardVo() {}
 	
-	public BoardVo(String title, String content, int hit, String regDate, int user_no) {
+	public BoardVo(String title, String content, int hit, String regDate, int userNo) {
 		this.title = title;
 		this.content = content;
 		this.hit = hit;
 		this.regDate = regDate;
-		this.user_no = user_no;
+		this.userNo = userNo;
 	}
 
-	public BoardVo(int no, String title, String content, int hit, String regDate, int user_no) {
+	public BoardVo(int no, String title, String content, int hit, String regDate, int userNo) {
 		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.hit = hit;
 		this.regDate = regDate;
-		this.user_no = user_no;
+		this.userNo = userNo;
 	}
 
 	public BoardVo(int no, String title, String content, int hit, String regDate, String name) {
@@ -77,12 +77,12 @@ public class BoardVo {
 		this.regDate = regDate;
 	}
 
-	public int getUser_no() {
-		return user_no;
+	public int getUserNo() {
+		return userNo;
 	}
 
-	public void setUser_no(int user_no) {
-		this.user_no = user_no;
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
 	}
 
 	public String getName() {
@@ -96,7 +96,7 @@ public class BoardVo {
 	@Override
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", content=" + content + ", hit=" + hit + ", regDate="
-				+ regDate + ", user_no=" + user_no + ", name=" + name + "]";
+				+ regDate + ", user_no=" + userNo + ", name=" + name + "]";
 	}
 	
 	
