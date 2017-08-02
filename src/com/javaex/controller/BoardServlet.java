@@ -45,7 +45,7 @@ public class BoardServlet extends HttpServlet {
 			BoardDao dao = new BoardDao();
 			dao.update(boardNo, title, content);
 			
-			String path = "/mysite/bs?a=read&no=" + boardNo;
+			String path = "/mysite/bs?a=read&u=me&no=" + boardNo;
 			response.sendRedirect(path);
 			
 		} else if("modifyform".equals(actionName)) {
@@ -75,7 +75,7 @@ public class BoardServlet extends HttpServlet {
 			BoardDao dao = new BoardDao();
 			int boardNo = dao.insert(userNo, title, content);
 
-			String path = "/mysite/bs?a=read&no=" + boardNo;
+			String path = "/mysite/bs?a=read&u=me&no=" + boardNo;
 			response.sendRedirect(path);
 			
 		} else if ("writeform".equals(actionName)) {
@@ -86,8 +86,11 @@ public class BoardServlet extends HttpServlet {
 
 			BoardDao dao = new BoardDao();
 			BoardVo vo = dao.read(boardNo);
-			dao.count(boardNo);
-
+			
+			String flag = request.getParameter("u");
+			if(!(flag.equals("me"))){				//글쓴이가 수정이나 글을 썼을 경우 조회수가 안 올라가게 함
+					dao.count(boardNo);
+			}
 			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/read.jsp");
 			request.setAttribute("vo", vo);
 			rd.forward(request, response);
