@@ -31,12 +31,14 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "select no, title, content, hit, reg_date, user_no, name "
-							+ "from (select board.no no, title, content, hit, reg_date, user_no, name "
-									+ "from users, board "
-									+ "where users.no = board.USER_NO) "
+			String query = "select rn, no, title, content, hit, reg_date, user_no, name "
+							+ "from (select rownum rn, no, title, content, hit, reg_date, user_no, name "
+									+ "from (select board.no no, title, content, hit, reg_date, user_no, name "
+											+ "from users, board "
+											+ "where users.no = board.USER_NO "
+											+ "order by no asc)) "
 							+ "where title like ? or name like ?"
-							+ "order by no desc";
+							+ "order by rn desc";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, '%'+shStr+'%');
 			pstmt.setString(2, '%'+shStr+'%');
@@ -44,6 +46,7 @@ public class BoardDao {
 
 			// 4.결과처리
 			while (rs.next()) {
+				int num = rs.getInt("rn");
 				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
@@ -52,7 +55,7 @@ public class BoardDao {
 				int userNo = rs.getInt("user_no");
 				String name = rs.getString("name");
 
-				list.add(new BoardVo(no, title, content, hit, regDate, userNo, name));
+				list.add(new BoardVo(num, no, title, content, hit, regDate, userNo, name));
 
 			}
 
@@ -367,14 +370,19 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "select board.no, title, content, hit, reg_date, user_no, name " + "from users, board "
-					+ "where users.no = board.USER_NO order by board.no desc";
+			String query = "select rownum rn, no, title, content, hit, reg_date, user_no, name "
+							+ "from (select board.no no, title, content, hit, reg_date, user_no, name "
+									+ "from users, board "
+									+ "where users.no = board.USER_NO "
+									+ "order by no asc)"
+							+ "order by rn desc";
 			pstmt = conn.prepareStatement(query);
 
 			rs = pstmt.executeQuery();
 
 			// 4.결과처리
 			while (rs.next()) {
+				int num = rs.getInt("rn");
 				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
@@ -394,7 +402,7 @@ public class BoardDao {
 					regDate = regDate.substring(0, 10);
 				}
 				
-				list.add(new BoardVo(no, title, content, hit, regDate, userNo, name));
+				list.add(new BoardVo(num, no, title, content, hit, regDate, userNo, name));
 
 			}
 

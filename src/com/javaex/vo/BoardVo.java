@@ -1,6 +1,7 @@
 package com.javaex.vo;
 
 public class BoardVo {
+	private int num;
 	private int no;
 	private String title;
 	private String content;
@@ -30,8 +31,8 @@ public class BoardVo {
 
 	
 
-	public BoardVo(int no, String title, String content, int hit, String regDate, int userNo, String name) {
-		super();
+	public BoardVo(int num, int no, String title, String content, int hit, String regDate, int userNo, String name) {
+		this.num = num;
 		this.no = no;
 		this.title = title;
 		this.content = content;
@@ -95,6 +96,14 @@ public class BoardVo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
 	}
 
 	@Override
