@@ -9,12 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.BoardDao;
 import com.javaex.util.WebUtil;
 import com.javaex.vo.BoardVo;
-import com.javaex.vo.UserVo;
 
 /**
  * Servlet implementation class BoardServlet
@@ -28,7 +26,18 @@ public class BoardServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String actionName = request.getParameter("a");
 
-		if("modify".equals(actionName)) {
+		if("search".equals(actionName)) {
+			String kwd = request.getParameter("kwd");
+			
+			BoardDao dao = new BoardDao();
+			List<BoardVo> list = dao.search(kwd);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/list.jsp");
+			request.setAttribute("list", list);
+			request.setAttribute("kwd", kwd);
+			rd.forward(request, response);
+			
+		} else if("modify".equals(actionName)) {
 			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
@@ -77,6 +86,7 @@ public class BoardServlet extends HttpServlet {
 
 			BoardDao dao = new BoardDao();
 			BoardVo vo = dao.read(boardNo);
+			dao.count(boardNo);
 
 			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/read.jsp");
 			request.setAttribute("vo", vo);
