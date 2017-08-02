@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.GuestBookDao;
+import com.javaex.util.WebUtil;
 import com.javaex.vo.GuestBookVo;
 
 /**
@@ -43,10 +44,11 @@ public class GuestBookServlet extends HttpServlet {
 			response.sendRedirect("/mysite/gb");
 			
 		} else if("deleteform".equals(actionName)){
-			//String no = (String)request.getAttribute("no");
+			WebUtil.forward(request, response, "/WEB-INF/views/guestbook/deleteform.jsp");
+			/*//String no = (String)request.getAttribute("no");
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/guestbook/deleteform.jsp");
 			//request.setAttribute("no", no);
-			rd.forward(request, response);
+			rd.forward(request, response);*/
 			
 		} else if("delete".equals(actionName)) {
 			int no = Integer.parseInt((String)request.getParameter("no").trim());		//no 앞뒤로 null값이 있을 수 있음
