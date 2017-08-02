@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -186,13 +187,13 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "insert into BOARD values (seq_board_no.nextval, ?, ?, 0, TO_DATE(?,'YYYY-MM-DD hh24:mi'), ?)";
+			String query = "insert into BOARD values (seq_board_no.nextval, ?, ?, 0, TO_DATE(?,'YYYY-MM-DD hh24:mi:ss'), ?)";
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, title);
 			pstmt.setString(2, content.replace("\r\n", "<br/>"));
 
 			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String date = sdf.format(cal.getTime());
 
 			pstmt.setString(3, date);
@@ -381,7 +382,18 @@ public class BoardDao {
 				String regDate = rs.getString("reg_date");
 				int userNo = rs.getInt("user_no");
 				String name = rs.getString("name");
-
+				
+				Calendar cal = Calendar.getInstance();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String date = sdf.format(cal.getTime());
+				String temp = regDate.substring(0, 10);
+				
+				if(date.equals(temp)) {
+					regDate = regDate.substring(11);
+				} else {
+					regDate = regDate.substring(0, 10);
+				}
+				
 				list.add(new BoardVo(no, title, content, hit, regDate, userNo, name));
 
 			}
