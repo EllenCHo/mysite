@@ -37,7 +37,7 @@
 						<td>${vo.hit }</td>
 						<td>${vo.regDate }</td>
 						<c:if test="${authUser.no == vo.userNo }">
-							<td><a href="/mysite/bs?a=delete&boardNo=${vo.no }" class="del">삭제</a></td>
+							<td><a href="/mysite/bs?a=delete&boardNo=${vo.no }&auth=${authUser.no }&user=${vo.userNo }" class="del">삭제</a></td>
 						</c:if>
 						<c:if test="${authUser.no != vo.userNo }">
 							<td></td>

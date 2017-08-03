@@ -61,10 +61,13 @@ public class BoardServlet extends HttpServlet {
 			
 		} else if ("delete".equals(actionName)) {
 			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
-	
-			BoardDao dao = new BoardDao();
-			dao.delete(boardNo);
+			String authUser = request.getParameter("auth");
+			String user = request.getParameter("user");
 			
+			if(user.equals(authUser)) {
+				BoardDao dao = new BoardDao();
+				dao.delete(boardNo);
+			}
 			response.sendRedirect("/mysite/bs");
 
 		} else if ("write".equals(actionName)) {
