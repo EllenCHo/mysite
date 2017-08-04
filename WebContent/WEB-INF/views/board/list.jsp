@@ -48,12 +48,22 @@
 				<div class="pager">
 					<ul>
 						<!-- 처음 페이지 번호가 첫페이지보다 작을 경우 나타나도록 하자 -->
-						<li><a href="">◀</a></li>
-						<li><a href="/mysite/bs&pageNo=1">1</a></li>
-						<!-- 선택된 페이지일 경우 밑의 줄처럼 하기 -->
-						<li class="selected">3</li>
+						<c:if test="${page.firstNo > 1 }">
+							<li><a href="/mysite/bs?pageNo=${page.currNo - 1 }">◀</a></li>
+						</c:if>
+						<c:forEach var="i" begin="${page.firstNo }" end="${page.endNo }" step="1">
+							<c:if test="${i != page.currNo }">
+								<li><a href="/mysite/bs?pageNo=${i }">${i }</a></li>
+							</c:if>
+							<!-- 선택된 페이지일 경우 밑의 줄처럼 하기 -->
+							<c:if test="${i == page.currNo }">
+								<li class="selected">${i }</li>
+							</c:if>
+						</c:forEach>
 						<!-- 마지막 페이지 번호가 총 페이지번호보다 작을 경우 나타나도록 하자 -->
-						<li><a href="">▶</a></li>
+						<c:if test="${page.endNo < page.endPage }">
+							<li><a href="/mysite/bs?pageNo=${page.currNo + 1 }">▶</a></li>
+						</c:if>
 					</ul>
 				</div>	
 				<c:if test="${!(empty authUser) }">			

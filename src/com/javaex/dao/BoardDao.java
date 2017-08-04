@@ -14,7 +14,7 @@ import java.util.List;
 import com.javaex.vo.BoardVo;
 
 public class BoardDao {
-	public void pager() {
+	public int getTotal() {
 		// 0. import java.sql.*;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -38,7 +38,6 @@ public class BoardDao {
 			// 4.결과처리
 			if (rs.next()) {
 				total = rs.getInt("cn");
-				//PagingVo vo = new PagingVo(total);
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -59,6 +58,7 @@ public class BoardDao {
 				System.out.println("error:" + e);
 			}
 		}
+		return total;
 	}
 
 	public List<BoardVo> search(String shStr) {
@@ -397,7 +397,7 @@ public class BoardDao {
 		return vo;
 	}
 
-	public List<BoardVo> getlist() {
+	public List<BoardVo> getlist(int currNo, int pageNo, int total) {
 		// 0. import java.sql.*;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -414,10 +414,17 @@ public class BoardDao {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. SQL문 준비 / 바인딩 / 실행
-			String query = "select rownum rn, no, title, content, hit, reg_date, user_no, name "
-					+ "from (select board.no no, title, content, hit, reg_date, user_no, name " + "from users, board "
-					+ "where users.no = board.USER_NO " + "order by no asc)" + "order by rn desc";
+			String query = "select rn, no, title, content, hit, reg_date, user_no, name "
+							+ "from (select rownum rn, no, title, content, hit, reg_date, user_no, name "
+									+ "from (select board.no no, title, content, hit, reg_date, user_no, name  "
+											+ "from users, board where users.no = board.USER_NO "
+											+ "order by no asc ))"
+							+ "where rn > ? and rn <= ? "
+							+ "order by rn desc ";
+							
 			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, total - (currNo -1)*pageNo - pageNo);
+			pstmt.setInt(2, total - (currNo -1) * pageNo);
 
 			rs = pstmt.executeQuery();
 

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.BoardDao;
+import com.javaex.util.Page;
 import com.javaex.util.WebUtil;
 import com.javaex.vo.BoardVo;
 
@@ -53,6 +54,7 @@ public class BoardServlet extends HttpServlet {
 			
 			BoardDao dao = new BoardDao();
 			BoardVo vo = dao.read(boardNo);
+			if(vo.getContent() == null) vo.setContent("");
 			vo.setContent(vo.getContent().replace("<br/>", "\n"));
 
 			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/modifyform.jsp");
@@ -99,10 +101,19 @@ public class BoardServlet extends HttpServlet {
 			rd.forward(request, response);
 
 		} else {
+			String number = request.getParameter("pageNo");
+			int num = number==null? 1 : Integer.parseInt(number);
+
 			BoardDao dao = new BoardDao();
-			List<BoardVo> list = dao.getlist();
+			int total = dao.getTotal();
+			
+			Page page = new Page(num, 5, 5, total);
+
+			List<BoardVo> list = dao.getlist(num, page.getPageNo(), total);
 			RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/views/board/list.jsp");
+			
 			request.setAttribute("list", list);
+			request.setAttribute("page", page);
 			rd.forward(request, response);
 		}
 	}
