@@ -9,7 +9,22 @@ public class Page {
 	int endNo;			//마지막 페이지 숫자
 	int endPage;		//마지막 페이지
 	
-	public Page() {}
+	public Page(int totalCount) {
+		currNo = 1;
+		pageCnt = 5;
+		pageNo = 5;
+		this.totalCount = totalCount;
+		endPage = (int) Math.ceil((double)totalCount/pageNo);
+		firstNo = (currNo/(pageCnt+1))*pageCnt+1;
+		if(endPage < pageCnt) {
+			endNo = endPage;
+		} else {
+			endNo = firstNo + pageCnt - 1;
+		}
+		if(endNo > endPage) {
+			endNo = endPage;
+		}
+	}
 
 	public Page(int currNo, int pageCnt, int pageNo, int totalCount) {
 		if(currNo < 1) {
